@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartRail — Mumbai Local Train Crowd Recommender</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="brand">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="3" width="16" height="16" rx="2"></rect>
+                        <path d="M4 11h16"></path>
+                        <path d="M12 3v8"></path>
+                        <path d="m8 19-3 3"></path>
+                        <path d="m16 19 3 3"></path>
+                        <circle cx="8" cy="15" r="1"></circle>
+                        <circle cx="16" cy="15" r="1"></circle>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>SmartRail <span class="badge-mvp">MVP</span></h1>
+                    <p class="tagline">Smart Commute Assistant for Mumbai Locals</p>
+                </div>
+            </div>
+            <div class="value-prop">
+                <p>"SmartRail doesn't just tell you the next train. It helps you decide which train to take."</p>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <main class="main-grid">
+            <!-- Planner Form Card -->
+            <section class="card planner-card">
+                <div class="card-header">
+                    <h2>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        Plan Your Trip
+                    </h2>
+                    <span class="subtext">Select stations & preferred departure time</span>
+                </div>
+
+                <form id="plannerForm" class="planner-form">
+                    <div class="form-group">
+                        <label for="sourceStation">Source Station</label>
+                        <div class="select-wrapper">
+                            <select id="sourceStation" required>
+                                <option value="" disabled selected>Select origin...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="swap-row">
+                        <button type="button" id="swapBtn" class="btn-swap" title="Swap Source and Destination">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m7 16 4-4-4-4"></path>
+                                <path d="M17 8 13 12 17 16"></path>
+                                <path d="M11 12H3"></path>
+                                <path d="M21 12H13"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destStation">Destination Station</label>
+                        <div class="select-wrapper">
+                            <select id="destStation" required>
+                                <option value="" disabled selected>Select destination...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="travelTime">Departure Time</label>
+                            <input type="time" id="travelTime" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="directionSelect">Train Direction</label>
+                            <input type="text" id="directionSelect" readonly class="input-readonly" value="Auto-detected">
+                        </div>
+                    </div>
+
+                    <div class="quick-times">
+                        <span class="label-quick">Quick select time:</span>
+                        <button type="button" class="chip-time" data-time="now">Now</button>
+                        <button type="button" class="chip-time" data-time="08:30">8:30 AM (Morning Peak)</button>
+                        <button type="button" class="chip-time" data-time="17:30">5:30 PM (Evening Peak)</button>
+                        <button type="button" class="chip-time" data-time="14:00">2:00 PM (Off-Peak)</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Travel Preference</label>
+                        <div class="preference-toggle">
+                            <label class="pref-option">
+                                <input type="radio" name="travelPreference" value="fastest">
+                                <span>Fastest</span>
+                            </label>
+                            <label class="pref-option">
+                                <input type="radio" name="travelPreference" value="balanced" checked>
+                                <span>Balanced</span>
+                            </label>
+                            <label class="pref-option">
+                                <input type="radio" name="travelPreference" value="least_crowded">
+                                <span>Least Crowded</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span>Find Best Train</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Quick Tips -->
+                <div class="info-box">
+                    <div class="info-icon">💡</div>
+                    <div class="info-text">
+                        <strong>How SmartRail works:</strong> We analyze peak-hour trends, train origin points, fast vs slow train capacities, and arrival intervals to calculate crowd percentages for upcoming trains.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="card results-card" id="resultsContainer">
+                <!-- Initial Empty State -->
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-illustration">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="4" y="3" width="16" height="16" rx="2"></rect>
+                            <path d="M4 11h16"></path>
+                            <path d="M12 3v8"></path>
+                            <path d="m8 19-3 3"></path>
+                            <path d="m16 19 3 3"></path>
+                        </svg>
+                    </div>
+                    <h3>Ready to compare upcoming trains</h3>
+                    <p>Select your route and travel time to view crowd levels, waiting times, and SmartRail recommendations.</p>
+                </div>
+
+                <!-- Results Output (Hidden by default) -->
+                <div id="resultsContent" class="results-content hidden">
+                    <div class="results-header">
+                        <div>
+                            <h2 id="routeTitle">Churchgate → Dadar</h2>
+                            <p class="route-meta" id="routeMeta">Western Line • Evening Peak Simulation</p>
+                        </div>
+                        <div class="refresh-pill" id="liveClockPill">
+                            <span class="pulse-dot"></span>
+                            <span id="activeSearchTime">5:30 PM</span>
+                        </div>
+                    </div>
+
+                    <!-- Recommendation Banner -->
+                    <div class="recommendation-banner" id="recommendationBanner">
+                        <div class="banner-badge">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            SMARTRAIL RECOMMENDATION
+                        </div>
+                        <h3 id="recTitle">Take the 5:51 PM Train</h3>
+                        <p id="recExplanation">Waiting just 9 extra minutes reduces your crowd density from 92% (Very High) down to 54% (Moderate) — getting you a comfortable ride.</p>
+                    </div>
+
+                    <!-- Train Cards List -->
+                    <div class="train-list-header">
+                        <span>4 Upcoming Trains</span>
+                        <span>Crowd Level & Waiting Time</span>
+                    </div>
+
+                    <div id="trainsList" class="trains-list">
+                        <!-- Dynamic Train Cards -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>SmartRail MVP — Western & Central Line Simulated Real-time Crowd Analytics</p>
+            <p class="footer-stations">Supported stations: Churchgate, Marine Lines, Charni Road, Grant Road, Mumbai Central, Dadar, Bandra, Andheri, Borivali, CSMT, Kurla, Thane, Kalyan</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
