@@ -1,0 +1,17 @@
+{
+  "name": "smartrail-mumbai",
+  "version": "1.0.0",
+  "description": "Classy, minimal interactive Mumbai local train crowd recommender with live chat and SQLite tracking",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "mumbai",
+    "train",
+    "sqlite",
+    "commute"
+  ],
+  "author": "",
+  "license": "MIT"
+}

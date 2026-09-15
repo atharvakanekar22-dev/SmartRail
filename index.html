@@ -3,35 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartRail — Mumbai Local Train Crowd Recommender</title>
+    <title>SmartRail — Mumbai Local Train Recommender</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Mumbai Atmospheric Background Layer -->
+    <div class="mumbai-skyline-bg" aria-hidden="true">
+        <svg class="mumbai-vector" viewBox="0 0 1600 480" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="mumbaiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#b45309" stop-opacity="0.07" />
+                    <stop offset="50%" stop-color="#1e293b" stop-opacity="0.05" />
+                    <stop offset="100%" stop-color="#0f172a" stop-opacity="0.08" />
+                </linearGradient>
+                <linearGradient id="seaLinkGlow" x1="0%" y1="100%" x2="0%" y2="0%">
+                    <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.1" />
+                    <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+                </linearGradient>
+            </defs>
+
+            <!-- Distant Mumbai City Skyline Silhouette -->
+            <path d="M0,480 L0,390 L40,390 L40,360 L60,360 L60,340 L80,340 L80,390 L110,390 L110,320 L130,320 L130,300 L140,260 L145,300 L155,300 L155,390 L210,390 L210,350 L250,350 L250,390 L320,390 L320,310 L340,310 L340,280 L350,250 L355,280 L370,310 L390,310 L390,390 L450,390 L450,340 L480,340 L480,390 L560,390 L560,330 L590,330 L590,390 L680,390 L680,300 L710,300 L710,390 L800,390 L800,350 L840,350 L840,390 L920,390 L920,320 L960,320 L960,390 L1080,390 L1080,340 L1120,340 L1120,390 L1250,390 L1250,310 L1290,310 L1290,390 L1400,390 L1400,350 L1450,350 L1450,390 L1600,390 L1600,480 Z" fill="url(#mumbaiGradient)" />
+
+            <!-- Bandra-Worli Sea Link Iconic Cable Stay Bridge Graphic -->
+            <g opacity="0.45" stroke="#94a3b8" stroke-width="1.2">
+                <!-- Pylon 1 -->
+                <line x1="720" y1="440" x2="720" y2="180" stroke="#b45309" stroke-width="3" />
+                <line x1="715" y1="440" x2="725" y2="440" stroke="#b45309" stroke-width="4" />
+                <!-- Pylon 1 Stay Cables -->
+                <line x1="720" y1="200" x2="560" y2="420" stroke-opacity="0.6" />
+                <line x1="720" y1="230" x2="600" y2="420" stroke-opacity="0.6" />
+                <line x1="720" y1="260" x2="640" y2="420" stroke-opacity="0.6" />
+                <line x1="720" y1="290" x2="680" y2="420" stroke-opacity="0.6" />
+                <line x1="720" y1="200" x2="880" y2="420" stroke-opacity="0.6" />
+                <line x1="720" y1="230" x2="840" y2="420" stroke-opacity="0.6" />
+                <line x1="720" y1="260" x2="800" y2="420" stroke-opacity="0.6" />
+                <line x1="720" y1="290" x2="760" y2="420" stroke-opacity="0.6" />
+
+                <!-- Pylon 2 -->
+                <line x1="940" y1="440" x2="940" y2="200" stroke="#b45309" stroke-width="2.5" />
+                <!-- Pylon 2 Stay Cables -->
+                <line x1="940" y1="220" x2="820" y2="420" stroke-opacity="0.5" />
+                <line x1="940" y1="250" x2="860" y2="420" stroke-opacity="0.5" />
+                <line x1="940" y1="280" x2="900" y2="420" stroke-opacity="0.5" />
+                <line x1="940" y1="220" x2="1060" y2="420" stroke-opacity="0.5" />
+                <line x1="940" y1="250" x2="1020" y2="420" stroke-opacity="0.5" />
+                <line x1="940" y1="280" x2="980" y2="420" stroke-opacity="0.5" />
+
+                <!-- Bridge Deck Base -->
+                <path d="M400,420 Q800,415 1300,420" stroke="#64748b" stroke-width="3" fill="none" />
+                <!-- Arabian Sea Coastline Waves -->
+                <path d="M0,450 Q200,442 400,450 T800,450 T1200,450 T1600,450" stroke="#cbd5e1" stroke-width="1.5" fill="none" />
+                <path d="M0,465 Q250,458 500,465 T1000,465 T1600,465" stroke="#e2e8f0" stroke-width="1" fill="none" />
+            </g>
+        </svg>
+        <div class="mumbai-ambient-glow"></div>
+    </div>
+
+    <!-- Notification Banner -->
+    <div id="toastNotification" class="toast-notification hidden">
+        <span class="toast-icon">✓</span>
+        <span id="toastMessage">Recommended train selection recorded!</span>
+    </div>
+
     <div class="app-container">
-        <!-- Header -->
+        <!-- Classy Minimal Header -->
         <header class="header">
-            <div class="brand">
-                <div class="logo-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="4" y="3" width="16" height="16" rx="2"></rect>
-                        <path d="M4 11h16"></path>
-                        <path d="M12 3v8"></path>
-                        <path d="m8 19-3 3"></path>
-                        <path d="m16 19 3 3"></path>
-                        <circle cx="8" cy="15" r="1"></circle>
-                        <circle cx="16" cy="15" r="1"></circle>
-                    </svg>
+            <div class="header-main">
+                <div class="brand">
+                    <div class="logo-badge">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="3" width="16" height="16" rx="2"></rect>
+                            <path d="M4 11h16"></path>
+                            <path d="M12 3v8"></path>
+                            <path d="m8 19-3 3"></path>
+                            <path d="m16 19 3 3"></path>
+                            <circle cx="8" cy="15" r="1"></circle>
+                            <circle cx="16" cy="15" r="1"></circle>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-title-row">
+                            <h1>SmartRail</h1>
+                            <span class="badge-heritage">Mumbai Locals</span>
+                        </div>
+                        <p class="tagline">Minimalist crowd intelligence for Western & Central lines</p>
+                    </div>
                 </div>
-                <div class="brand-text">
-                    <h1>SmartRail <span class="badge-mvp">MVP</span></h1>
-                    <p class="tagline">Smart Commute Assistant for Mumbai Locals</p>
+
+                <!-- Live Database Metrics Bar -->
+                <div class="header-metrics">
+                    <div class="metric-pill" title="Total users who clicked on SmartRail's recommended train">
+                        <span class="metric-icon">🚆</span>
+                        <span class="metric-label">Recommended Clicks:</span>
+                        <strong id="headerRecClicks" class="metric-value highlight-num">0</strong>
+                    </div>
+
+                    <div class="metric-pill" title="Commuters currently active in the live transit chat">
+                        <span class="pulse-indicator"></span>
+                        <span class="metric-label">In Chat:</span>
+                        <strong id="headerActiveChat" class="metric-value">0</strong>
+                    </div>
+
+                    <button type="button" id="btnOpenDatabase" class="btn-action-outline">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                        <span>Database Analytics</span>
+                    </button>
                 </div>
             </div>
-            <div class="value-prop">
-                <p>"SmartRail doesn't just tell you the next train. It helps you decide which train to take."</p>
+
+            <div class="value-strip">
+                <p class="quote">“SmartRail doesn't just tell you the next train. It helps you decide which train to take.”</p>
             </div>
         </header>
 
@@ -40,19 +129,16 @@
             <!-- Planner Form Card -->
             <section class="card planner-card">
                 <div class="card-header">
-                    <h2>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        Plan Your Trip
-                    </h2>
-                    <span class="subtext">Select stations & preferred departure time</span>
+                    <div>
+                        <h2>Plan Commute</h2>
+                        <span class="subtext">Select stations & travel preference</span>
+                    </div>
+                    <span class="card-chip">Fastest • Balanced • Comfort</span>
                 </div>
 
                 <form id="plannerForm" class="planner-form">
                     <div class="form-group">
-                        <label for="sourceStation">Source Station</label>
+                        <label for="sourceStation">Origin Station</label>
                         <div class="select-wrapper">
                             <select id="sourceStation" required>
                                 <option value="" disabled selected>Select origin...</option>
@@ -61,13 +147,14 @@
                     </div>
 
                     <div class="swap-row">
-                        <button type="button" id="swapBtn" class="btn-swap" title="Swap Source and Destination">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <button type="button" id="swapBtn" class="btn-swap" title="Swap Origin and Destination">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="m7 16 4-4-4-4"></path>
                                 <path d="M17 8 13 12 17 16"></path>
                                 <path d="M11 12H3"></path>
                                 <path d="M21 12H13"></path>
                             </svg>
+                            <span>Swap</span>
                         </button>
                     </div>
 
@@ -87,14 +174,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="directionSelect">Train Direction</label>
+                            <label for="directionSelect">Direction</label>
                             <input type="text" id="directionSelect" readonly class="input-readonly" value="Auto-detected">
                         </div>
                     </div>
 
                     <div class="quick-times">
-                        <span class="label-quick">Quick select time:</span>
-                        <button type="button" class="chip-time" data-time="now">Now</button>
+                        <span class="label-quick">Quick Presets:</span>
+                        <button type="button" class="chip-time" data-time="now">Live Now</button>
                         <button type="button" class="chip-time" data-time="08:30">8:30 AM (Morning Peak)</button>
                         <button type="button" class="chip-time" data-time="17:30">5:30 PM (Evening Peak)</button>
                         <button type="button" class="chip-time" data-time="14:00">2:00 PM (Off-Peak)</button>
@@ -105,34 +192,40 @@
                         <div class="preference-toggle">
                             <label class="pref-option">
                                 <input type="radio" name="travelPreference" value="fastest">
-                                <span>Fastest</span>
+                                <span class="pref-badge">
+                                    <strong>Fastest</strong>
+                                    <small>Shortest wait</small>
+                                </span>
                             </label>
                             <label class="pref-option">
                                 <input type="radio" name="travelPreference" value="balanced" checked>
-                                <span>Balanced</span>
+                                <span class="pref-badge">
+                                    <strong>Balanced</strong>
+                                    <small>Crowd & time</small>
+                                </span>
                             </label>
                             <label class="pref-option">
                                 <input type="radio" name="travelPreference" value="least_crowded">
-                                <span>Least Crowded</span>
+                                <span class="pref-badge">
+                                    <strong>Comfort</strong>
+                                    <small>Lowest crowd</small>
+                                </span>
                             </label>
                         </div>
                     </div>
 
                     <button type="submit" class="btn-primary">
-                        <span>Find Best Train</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <span>Find Best Upcoming Train</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </button>
                 </form>
 
-                <!-- Quick Tips -->
-                <div class="info-box">
-                    <div class="info-icon">💡</div>
-                    <div class="info-text">
-                        <strong>How SmartRail works:</strong> We analyze peak-hour trends, train origin points, fast vs slow train capacities, and arrival intervals to calculate crowd percentages for upcoming trains.
-                    </div>
+                <div class="info-footer-note">
+                    <span class="icon-info">🏛️</span>
+                    <span>Algorithmic crowd modeling incorporates peak direction flow, station interchange weight, headway backlog, and terminus origin discounts.</span>
                 </div>
             </section>
 
@@ -141,16 +234,18 @@
                 <!-- Initial Empty State -->
                 <div id="emptyState" class="empty-state">
                     <div class="empty-illustration">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
                             <rect x="4" y="3" width="16" height="16" rx="2"></rect>
                             <path d="M4 11h16"></path>
                             <path d="M12 3v8"></path>
                             <path d="m8 19-3 3"></path>
                             <path d="m16 19 3 3"></path>
+                            <circle cx="8" cy="15" r="1.5"></circle>
+                            <circle cx="16" cy="15" r="1.5"></circle>
                         </svg>
                     </div>
-                    <h3>Ready to compare upcoming trains</h3>
-                    <p>Select your route and travel time to view crowd levels, waiting times, and SmartRail recommendations.</p>
+                    <h3>Plan your Mumbai commute</h3>
+                    <p>Select your stations above to calculate real-time crowd estimates and SmartRail's algorithmic recommendation.</p>
                 </div>
 
                 <!-- Results Output (Hidden by default) -->
@@ -166,22 +261,40 @@
                         </div>
                     </div>
 
-                    <!-- Recommendation Banner -->
+                    <!-- Recommendation Banner with Interactive Selection -->
                     <div class="recommendation-banner" id="recommendationBanner">
-                        <div class="banner-badge">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                            </svg>
-                            SMARTRAIL RECOMMENDATION
+                        <div class="banner-top">
+                            <div class="banner-badge">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                SMARTRAIL RECOMMENDATION
+                            </div>
+                            <span class="rec-score-chip" id="recScoreChip">Best Choice</span>
                         </div>
+
                         <h3 id="recTitle">Take the 5:51 PM Train</h3>
                         <p id="recExplanation">Waiting just 9 extra minutes reduces your crowd density from 92% (Very High) down to 54% (Moderate) — getting you a comfortable ride.</p>
+                        
+                        <!-- Interactive Recommendation Action Button -->
+                        <div class="rec-action-bar">
+                            <button type="button" id="btnTrackRecommendation" class="btn-rec-action">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span id="recBtnLabel">I'm Taking This Train (Record in Database)</span>
+                            </button>
+                            <span class="rec-action-hint">
+                                <span class="heart-icon">🚆</span>
+                                <span id="recClickFeedback">Clicked <strong id="recTrainClickCount">0</strong> times by commuters</span>
+                            </span>
+                        </div>
                     </div>
 
                     <!-- Train Cards List -->
                     <div class="train-list-header">
-                        <span>4 Upcoming Trains</span>
-                        <span>Crowd Level & Waiting Time</span>
+                        <span>4 Upcoming Trains (Next 30 Mins)</span>
+                        <span>Estimated Crowd & Platform Headway</span>
                     </div>
 
                     <div id="trainsList" class="trains-list">
@@ -193,9 +306,199 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>SmartRail MVP — Western & Central Line Simulated Real-time Crowd Analytics</p>
-            <p class="footer-stations">Supported stations: Churchgate, Marine Lines, Charni Road, Grant Road, Mumbai Central, Dadar, Bandra, Andheri, Borivali, CSMT, Kurla, Thane, Kalyan</p>
+            <div class="footer-content">
+                <p>SmartRail Mumbai • Classy Minimal Commute Analytics • SQLite Database Engine</p>
+                <p class="footer-stations">Western Line: Churchgate to Borivali | Central Line: CSMT to Kalyan</p>
+            </div>
         </footer>
+    </div>
+
+    <!-- Floating Live Commuter Chat Widget -->
+    <div id="chatWidget" class="chat-widget collapsed">
+        <!-- Floating Chat Bar / Header -->
+        <div id="chatHeader" class="chat-header">
+            <div class="chat-header-title">
+                <span class="chat-live-pulse"></span>
+                <span class="chat-title-text">Mumbai Commuter Chat</span>
+                <span class="chat-count-badge" id="chatHeaderBadge">0 Online</span>
+            </div>
+            <div class="chat-header-actions">
+                <button type="button" id="btnToggleChat" class="btn-chat-toggle" title="Expand or Collapse Chat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Body (Collapsible) -->
+        <div id="chatBody" class="chat-body">
+            <!-- User Handle Bar -->
+            <div class="chat-user-bar">
+                <span class="label-as">Commuter Name:</span>
+                <input type="text" id="chatUsernameInput" maxlength="30" placeholder="e.g. BandraRider" class="chat-name-input">
+                <span class="station-tag-indicator">Station:</span>
+                <select id="chatStationTag" class="chat-station-select">
+                    <option value="General">All Lines</option>
+                    <option value="Churchgate">Churchgate</option>
+                    <option value="Marine Lines">Marine Lines</option>
+                    <option value="Dadar">Dadar</option>
+                    <option value="Bandra">Bandra</option>
+                    <option value="Andheri">Andheri</option>
+                    <option value="Borivali">Borivali</option>
+                    <option value="CSMT">CSMT</option>
+                    <option value="Kurla">Kurla</option>
+                    <option value="Thane">Thane</option>
+                    <option value="Kalyan">Kalyan</option>
+                </select>
+            </div>
+
+            <!-- Quick Alert Chips -->
+            <div class="chat-quick-chips">
+                <button type="button" class="quick-chip" data-msg="Train moving smoothly on time">⚡ On Time</button>
+                <button type="button" class="quick-chip" data-msg="Moderate crowd, plenty of standing space">🚶 Moderate Crowd</button>
+                <button type="button" class="quick-chip" data-msg="Platform is very crowded right now">⚠️ Heavy Rush</button>
+                <button type="button" class="quick-chip" data-msg="Train originated empty here!">🚆 Originated Empty</button>
+            </div>
+
+            <!-- Messages List -->
+            <div id="chatMessagesList" class="chat-messages-list">
+                <!-- Dynamic Chat Bubbles -->
+            </div>
+
+            <!-- Message Input Area -->
+            <form id="chatForm" class="chat-input-form">
+                <input type="text" id="chatTextInput" placeholder="Type station update or commute tip..." maxlength="250" autocomplete="off" required>
+                <button type="submit" class="btn-chat-send">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Live Database & Analytics Modal -->
+    <div id="dbModal" class="modal-overlay hidden">
+        <div class="modal-window">
+            <div class="modal-header">
+                <div class="modal-title-row">
+                    <span class="db-icon">🗄️</span>
+                    <div>
+                        <h2>SmartRail SQLite Database Analytics</h2>
+                        <p class="modal-sub">Live data query results from <code>smartrail.db</code></p>
+                    </div>
+                </div>
+                <button type="button" id="btnCloseModal" class="btn-modal-close" title="Close modal">&times;</button>
+            </div>
+
+            <div class="modal-content">
+                <!-- KPI Stat Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <span class="kpi-label">Total Recommended Clicks</span>
+                        <span class="kpi-value highlight" id="modalTotalClicks">0</span>
+                        <span class="kpi-meta">Commuters choosing recommended train</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">Active Users in Chat</span>
+                        <span class="kpi-value" id="modalActiveUsers">0</span>
+                        <span class="kpi-meta">Heartbeat active in last 5 minutes</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">Total Commuter Messages</span>
+                        <span class="kpi-value" id="modalTotalMsgs">0</span>
+                        <span class="kpi-meta">Real-time local station updates</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">Database Status</span>
+                        <span class="kpi-value text-green">SQLite Synced</span>
+                        <span class="kpi-meta">Native node:sqlite engine</span>
+                    </div>
+                </div>
+
+                <!-- Tabs: Clicks Log vs Active Chat Users vs Raw JSON -->
+                <div class="modal-tabs">
+                    <button type="button" class="tab-btn active" data-tab="tabClicks">Recent Recommendation Clicks</button>
+                    <button type="button" class="tab-btn" data-tab="tabUsers">Active Chat Commuters</button>
+                    <button type="button" class="tab-btn" data-tab="tabRaw">Raw Database JSON</button>
+                </div>
+
+                <!-- Tab 1: Clicks Log -->
+                <div id="tabClicks" class="tab-panel active">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Commuter</th>
+                                    <th>Train Time</th>
+                                    <th>Type</th>
+                                    <th>Route</th>
+                                    <th>Crowd %</th>
+                                    <th>Preference</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblClicksBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Active Chat Users -->
+                <div id="tabUsers" class="tab-panel">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Commuter ID</th>
+                                    <th>Username</th>
+                                    <th>Station Tag</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblUsersBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Raw Database JSON -->
+                <div id="tabRaw" class="tab-panel">
+                    <div class="raw-actions">
+                        <button type="button" id="btnExportJson" class="btn-action-outline">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span>Download Full DB JSON</span>
+                        </button>
+                        <span class="raw-note">Direct snapshot of SQLite tables</span>
+                    </div>
+                    <pre id="rawDbContent" class="raw-json-viewer">Loading raw database...</pre>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="btnRefreshDbModal" class="btn-secondary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    <span>Refresh Live Data</span>
+                </button>
+                <button type="button" id="btnCloseModalBottom" class="btn-primary-modal">Done</button>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>
