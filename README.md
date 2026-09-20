@@ -24,7 +24,7 @@ SmartRail is an MVP web application designed for Mumbai local train commuters. W
 
 ---
 
-## 🚀 How to Run locally
+##  How to Run locally
 
 ### Option 1: Built-in PowerShell Server (Recommended for Windows)
 
