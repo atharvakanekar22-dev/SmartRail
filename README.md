@@ -21,7 +21,6 @@ SmartRail is an MVP web application designed for Mumbai local train commuters. W
   - **Headway / Time Gap**: Platform crowd accumulation scales with headway since the previous train.
 - **Preference-Weighted Recommendation Scoring**: Calculates an objective score based on selected preference weights.
 - **"Why this train?" Explanation**: Displays the main factors behind the recommendation aligned with the chosen travel preference.
-- **Zero Heavy Dependencies**: Native browser Web App (HTML5, CSS3, JS ES6+) without npm or database dependencies.
 
 ---
 
