@@ -34,14 +34,14 @@ Run the included PowerShell script in your terminal:
 powershell -ExecutionPolicy Bypass -File .\server.ps1
 ```
 
-Then open your browser and navigate to:
+Then open your browser and navigate to the follwing:
 ```
 http://localhost:8080
 ```
 
 ### Option 2: Direct File Open or Python HTTP Server
 
-If you prefer Python or double-clicking `index.html`:
+If you prefer Python or double clicking `index.html`:
 
 **Python 3:**
 ```bash
