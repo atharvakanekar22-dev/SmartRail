@@ -78,3 +78,4 @@ SmartRail/
 ├── server.ps1     # Native PowerShell HTTP server
 └── README.md      # Setup and project documentation
 ```
+SmartRail
