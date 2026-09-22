@@ -1,7 +1,7 @@
 # SmartRail 🚆
 > **"SmartRail doesn't just tell you the next train. It helps you decide which train to take."**
 
-SmartRail is an MVP web application designed for Mumbai local train commuters. While commuters often know when the next train arrives, they lack visibility into how crowded upcoming trains are likely to be. SmartRail calculates realistic crowd percentages from key operational factors (peak hours, direction flow, train origin, train type, platform headway) and recommends the best train based on your personal travel preference.
+SmartRail is an MVP web application designed for Mumbai local train commuters. While commuters often know when the next train arrives, they lack visibility into how crowded upcoming trains are likely to be. SmartRail calculates realistic crowd percentages from key operational factors (peak hours, train origin, train type, platform headway) and recommends the best train based on your personal travel preference.
 
 ---
 
